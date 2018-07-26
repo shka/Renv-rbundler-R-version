@@ -3,7 +3,7 @@
 load test_helper
 
 @test 'Allow overriding version with Renv local' {
-  cd_into_project_with_description 1.2.3
+  create_description 1.2.3
   create_version 4.5.6
   Renv local 4.5.6
   run Renv rbundler-R-version
@@ -19,7 +19,7 @@ load test_helper
 }
 
 @test 'Recognize simple R version in a line with an indent' {
-  cd_into_project_with_description 1.2.3
+  create_description 1.2.3
   run Renv rbundler-R-version
   assert_success '1.2.3'
 }

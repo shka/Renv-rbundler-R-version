@@ -6,6 +6,8 @@ setup() {
   export RENV_ROOT="$BATS_TMPDIR/Renv_root"
   mkdir -p "$RENV_ROOT/plugins"
   ln -s "$PLUGIN_ROOT" "$RENV_ROOT/plugins/rbundler-R-version"
+  mkdir -p "$EXAMPLE_APP_DIR"
+  cd "$EXAMPLE_APP_DIR"
 }
 
 teardown() {
@@ -43,10 +45,8 @@ assert_success() {
   fi
 }
 
-# cd_into_project_with_description R_version [extra_args]
-cd_into_project_with_description() {
-  mkdir -p "$EXAMPLE_APP_DIR"
-  cd "$EXAMPLE_APP_DIR"
+# Creates face DESCRIPTION R_version [extra_args]
+create_description() {
   echo "    R (>= ${1}),${2}" > "$EXAMPLE_APP_DIR/DESCRIPTION"
 }
 

@@ -8,7 +8,7 @@ load test_helper
 }
 
 @test 'version-origin reports DESCRIPTION if set by DESCRIPTION' {
-  cd_into_project_with_description 1.8.7
+  create_description 1.8.7
   run Renv version-origin
   assert_success "DESCRIPTION"
 }
