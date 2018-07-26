@@ -2,13 +2,13 @@
 
 load test_helper
 
-@test 'version-origin continues to report default version if no Gemfile' {
-  run rbenv version-origin
-  assert_success "${RBENV_ROOT}/version"
+@test 'version-origin continues to report default version if no DESCRIPTION' {
+  run Renv version-origin
+  assert_success "${RENV_ROOT}/version"
 }
 
-@test 'version-origin reports Gemfile if set by Gemfile' {
-  cd_into_project_with_gemfile "'" 1.8.7
-  run rbenv version-origin
-  assert_success "Gemfile"
+@test 'version-origin reports DESCRIPTION if set by DESCRIPTION' {
+  cd_into_project_with_description 1.8.7
+  run Renv version-origin
+  assert_success "DESCRIPTION"
 }
