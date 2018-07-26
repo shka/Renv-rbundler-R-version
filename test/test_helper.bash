@@ -3,14 +3,14 @@ TEST_BASENAME="$(basename $BATS_TEST_DIRNAME)"
 PLUGIN_ROOT="${BATS_TEST_DIRNAME%${TEST_BASENAME}}"
 
 setup() {
-  export RBENV_ROOT="$BATS_TMPDIR/rbenv_root"
-  mkdir -p "$RBENV_ROOT/plugins"
-  ln -s "$PLUGIN_ROOT" "$RBENV_ROOT/plugins/bundler-ruby-version"
+  export RENV_ROOT="$BATS_TMPDIR/Renv_root"
+  mkdir -p "$RENV_ROOT/plugins"
+  ln -s "$PLUGIN_ROOT" "$RENV_ROOT/plugins/rbundler-R-version"
 }
 
 teardown() {
   rm -r "$EXAMPLE_APP_DIR"
-  rm -r "$RBENV_ROOT"
+  rm -r "$RENV_ROOT"
 }
 
 assert() {
@@ -43,19 +43,18 @@ assert_success() {
   fi
 }
 
-# cd_into_project_with_gemfile quote_char ruby_version [extra_args]
-cd_into_project_with_gemfile() {
-  local q="$1"
+# cd_into_project_with_description R_version [extra_args]
+cd_into_project_with_description() {
   mkdir -p "$EXAMPLE_APP_DIR"
   cd "$EXAMPLE_APP_DIR"
-  echo "ruby ${q}${2}${q}${3}" > "$EXAMPLE_APP_DIR/Gemfile"
+  echo "    R (>= ${1}),${2}" > "$EXAMPLE_APP_DIR/DESCRIPTION"
 }
 
 # Creates fake version directory
 create_version() {
-  d="$RBENV_ROOT/versions/$1/bin"
+  d="$RENV_ROOT/versions/$1/bin"
   mkdir -p "$d"
-  ln -s /bin/echo "$d/ruby"
+  ln -s /bin/echo "$d/R"
 }
 
 flunk() {

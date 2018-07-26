@@ -1,42 +1,37 @@
 #!/usr/bin/env bash
 #
-# If a custom Ruby version is not already defined locally, this looks for a
-# Ruby version in the current tree's Gemfile and prints out that version.
+# If a custom R version is not already defined locally, this looks for a
+# R version in the current tree's DESCRIPTION and prints out that version.
 
-[ -n "$RBENV_DEBUG" ] && set -x
+[ -n "$RENV_DEBUG" ] && set -x
 
-find_gemfile_path() {
+find_description_path() {
   local root="$1"
   while [ -n "$root" ]; do
-    if [ -e "${root}/Gemfile" ]; then
-      echo "${root}/Gemfile"
+    if [ -e "${root}/DESCRIPTION" ]; then
+      echo "${root}/DESCRIPTION"
       exit
     fi
     root="${root%/*}"
   done
 }
 
-should_find_in_gemfile() {
-  [ -z "$(rbenv-local 2>/dev/null)" ]
+should_find_in_description() {
+  [ -z "$(Renv-local 2>/dev/null)" ]
 }
 
-version_from_gemfile() {
-  # handles simple ruby statements, as well as engine and engine_version,
-  # with single or double quotes and in either order
+version_from_description() {
+  # handles simple R statements
 
-  grep '^\s*ruby' "$GEMFILE_PATH" |
-    sed -e 's/[[:space:]]/ /g' -e 's/#.*//' \
-        -e 's/engine:/:engine =>/' -e 's/engine_version:/:engine_version =>/' \
-        -e "s/.*:engine *=> *['\"]\([^'\"]*\).*:engine_version *=> *['\"]\([^'\"]*\).*/\1-\2/" \
-        -e "s/.*:engine_version *=> *['\"]\([^'\"]*\).*:engine *=> *['\"]\([^'\"]*\).*/\2-\1/" \
-        -e "s/ *ruby *['\"]\([^'\"]*\).*/\1/" |
+  grep -E '^(Depends:)?\s+R' "$DESCRIPTION_PATH" |
+    sed -e "s/^.*R [(]>= \([^)]*\)[)].*/\1/" |
     head -1
 }
 
-if should_find_in_gemfile; then
-  GEMFILE_PATH=$(find_gemfile_path "$PWD")
+if should_find_in_description; then
+  DESCRIPTION_PATH=$(find_description_path "$PWD")
 
-  if [ -e "$GEMFILE_PATH" ]; then
-    version_from_gemfile
+  if [ -e "$DESCRIPTION_PATH" ]; then
+    version_from_description
   fi
 fi
