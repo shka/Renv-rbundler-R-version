@@ -1,5 +1,5 @@
-RBENV_BUNDLER_VERSION=$(rbenv-bundler-ruby-version)
+RENV_RBUNDLER_VERSION=$(Renv-rbundler-R-version)
 
-if [ -n "$RBENV_BUNDLER_VERSION" ]; then
-  RBENV_VERSION="${RBENV_BUNDLER_VERSION}"
+if [ -n "$RENV_RBUNDLER_VERSION" ]; then
+  RENV_VERSION="${RENV_RBUNDLER_VERSION}"
 fi
